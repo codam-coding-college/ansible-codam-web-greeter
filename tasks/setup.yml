@@ -88,7 +88,7 @@
   lineinfile:
     path: /etc/lightdm/lightdm.conf
     line: greeter-setup-script=/usr/share/42/scripts/hook-greeter-setup.sh
-    insertafter: "[SeatDefaults]"
+    insertbefore: 'session-setup-script='
     state: present
     regexp: '^#?greeter-setup-script='
 
