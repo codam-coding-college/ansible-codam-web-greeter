@@ -1,0 +1,28 @@
+#!/bin/bash
+
+{% if ansible_system_vendor == 'Apple Inc.' %}
+# Set brightness on Apple hardware
+# Check if the brightness-default.sh script exists in the same directory (provided by 42).
+# Could implement the same behavior, but if it changes in 42.common we'd need to change it here as well.
+# Better to just source it if it exists.
+if [ -f "$(dirname $0)/brightness-default.sh" ]; then
+	source "$(dirname $0)/brightness-default.sh"
+fi
+{% endif %}
+
+# Prevent the screen from going to sleep
+/usr/bin/xset s off
+
+# Turn on Num Lock on the keyboard
+/usr/bin/numlockx on
+
+# Get a list of all active user sessions on the system with loginctl
+USER_SESSIONS=$(/usr/bin/loginctl list-sessions --no-legend | /usr/bin/awk '{print $3}')
+
+# Loop over all active sessions and cache them with dbus-send
+# This is required for the codam-web-greeter and other lock screens to work properly (fetch the list of users)
+for USER in $USER_SESSIONS; do
+	# Cache the user
+	/usr/bin/dbus-send --system --print-reply --type=method_call --dest=org.freedesktop.Accounts /org/freedesktop/Accounts org.freedesktop.Accounts.CacheUser string:"$USER" || true
+	echo "Cached user $USER"
+done

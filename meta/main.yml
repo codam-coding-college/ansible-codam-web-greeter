@@ -1,0 +1,15 @@
+galaxy_info:
+  role_name: webgreeter
+  author: "Freek Bes"
+  description: Role to install codam-web-greeter on a 42 network cluster computer
+  company: "Codam Coding College"
+  license: MIT
+  min_ansible_version: "2.9" # tested on 2.12
+  platforms:
+  - name: Ubuntu
+    versions:
+    - "focal" # untested
+    - "jammy" # tested on 22.04
+
+dependencies: []
+

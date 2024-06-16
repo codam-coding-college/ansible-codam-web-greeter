@@ -1,0 +1,24 @@
+---
+- name: Uninstall ft-lock package
+  tags: [codam.webgreeter, codam.webgreeter.ftlock]
+  apt:
+    name: ft-lock
+    state: absent
+
+- name: Copy fake ft_lock binary
+  tags: [codam.webgreeter, codam.webgreeter.ftlock]
+  become: true
+  copy:
+    src: usr/local/bin/ft_lock
+    dest: /usr/local/bin/ft_lock
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Create link to ft_lock binary in /usr/share/42 # for compatibility with ft-lock gnome extension
+  tags: [codam.webgreeter, codam.webgreeter.ftlock]
+  become: true
+  file:
+    src: /usr/local/bin/ft_lock
+    dest: /usr/share/42/ft_lock
+    state: link

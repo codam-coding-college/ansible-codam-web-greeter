@@ -1,0 +1,16 @@
+---
+- name: "Include initial requirements for codam-web-greeter"
+  ansible.builtin.include_tasks: "init.yml"
+  tags: [codam.webgreeter, codam.webgreeter.init]
+
+- name: "Include installation process for codam-web-greeter"
+  ansible.builtin.include_tasks: "install.yml"
+  tags: [codam.webgreeter, codam.webgreeter.install]
+
+- name: "Include configuration setup process for codam-web-greeter"
+  ansible.builtin.include_tasks: "setup.yml"
+  tags: [codam.webgreeter, codam.webgreeter.setup]
+
+- name: "Include ft_lock replacement process"
+  ansible.builtin.include_tasks: "ft_lock.yml"
+  tags: [codam.webgreeter, codam.webgreeter.ftlock]

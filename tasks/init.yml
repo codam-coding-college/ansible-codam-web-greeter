@@ -1,0 +1,29 @@
+---
+- name: Check if lightdm is installed
+  tags: [codam.webgreeter, codam.webgreeter.init]
+  stat:
+    path: /usr/sbin/lightdm
+  register: lightdm_bin
+  failed_when: lightdm_bin.stat.exists == False
+
+- name: Install dependencies
+  tags: [codam.webgreeter, codam.webgreeter.init]
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - lightdm
+    - light-locker
+    - xprintidle
+
+- name: Download nody-greeter deb
+  tags: [codam.webgreeter, codam.webgreeter.init]
+  get_url:
+    url: "https://github.com/JezerM/nody-greeter/releases/download/{{ nody_greeter_version }}/nody-greeter-{{ nody_greeter_version }}-ubuntu.deb"
+    dest: "/tmp/nody-greeter-{{ nody_greeter_version }}-ubuntu.deb"
+
+- name: Install nody-greeter
+  tags: [codam.webgreeter, codam.webgreeter.init]
+  apt:
+    deb: "/tmp/nody-greeter-{{ nody_greeter_version }}-ubuntu.deb"
+    state: present

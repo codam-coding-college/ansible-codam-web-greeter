@@ -1,0 +1,32 @@
+#!/bin/sh
+
+#        ========== AOOOOA    AOOOOA
+#                  AV    VA  AV    VA
+#           :::::::O::       O  ++++O+++++++++++============ :::
+#                  VA    AV  VA    AV
+#                   VOOOOV    VOOOOV
+#              ------------------==================
+
+#                  EEEEEEA     VA     VA   VM
+#              ====M=====VA=    VA     VA AVM
+#                  M      X      VA     VAV M
+#                  M     AV       VA     V  M
+#                  EEEEEEV     EEEEEA       M
+
+# The ft_lock package was replaced by codam-web-greeter at Codam.
+# The command might still be used by people to lock their screen,
+# so this file redirects the command to dm-tool, which calls the greeter.
+# The greeter knows from the list of active sessions that it should act as
+# a lock screen instead of a login screen.
+
+# If the -d flag is given, the ft_lock daemon was tried to be started.
+# This is not needed anymore, so exit with success.
+if [ "$1" = "-d" ]; then
+	echo "ft_lock was replaced by codam-web-greeter. Exiting."
+	exit 0
+fi
+
+if ! /usr/bin/dm-tool switch-to-greeter; then
+	# If above command failed, try this one (though the screen might blank until a key is pressed):
+	/usr/bin/dm-tool lock
+fi

@@ -1,0 +1,46 @@
+---
+- name: Uninstall outdated codam-web-greeter
+  tags: [codam.webgreeter, codam.webgreeter.install]
+  become: true
+  shell:
+    cmd: "[[ v$(cat /usr/share/web-greeter/themes/codam/package.json | jq -r '.version') == {{ codam_web_greeter_version }} ]] || rm -rf /usr/share/web-greeter/themes/codam"
+    executable: /bin/bash
+    removes: "/usr/share/web-greeter/themes/codam" # do not run if codam theme folder does not exist
+
+- name: Create codam-web-greeter theme directory
+  tags: [codam.webgreeter, codam.webgreeter.install]
+  become: true
+  file:
+    path: /usr/share/web-greeter/themes/codam
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Install codam-web-greeter
+  tags: [codam.webgreeter, codam.webgreeter.install]
+  become: true
+  unarchive:
+    src: "{{ codam_web_greeter_git_repo }}/releases/download/{{ codam_web_greeter_version }}/{{ codam_web_greeter_release_zip_filename }}"
+    remote_src: true
+    dest: /usr/share/web-greeter/themes/codam
+    creates: /usr/share/web-greeter/themes/codam/package.json
+    owner: root
+    group: root
+    # no mode, zip file has its own permissions
+
+- name: Install codam-web-greeter systemd services
+  tags: [codam.webgreeter, codam.webgreeter.install]
+  become: true
+  shell:
+    cmd: "bash install.sh"
+    executable: /bin/bash
+    chdir: /usr/share/web-greeter/themes/codam/systemd
+
+- name: Fetch initial codam-web-greeter data.json from server
+  tags: [codam.webgreeter, codam.webgreeter.install]
+  service:
+    daemon_reload: true
+    name: codam-web-greeter
+    state: started
+  failed_when: false

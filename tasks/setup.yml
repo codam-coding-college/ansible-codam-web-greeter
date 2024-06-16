@@ -1,0 +1,174 @@
+---
+- name: Create /usr/share/codam directory
+  tags: [codam.webgreeter, codam.webgreeter.setup]
+  become: true
+  file:
+    path: /usr/share/codam
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+# Step below should be handled by the 42.common role, otherwise you'd have to fork this role only to change the logo.
+# This would be inconvenient. Since every campus already uses 42.common, it's better to handle this in that role.
+# Place the files needed in your campus_files folder in the root of your ansiblecluster repository.
+# Of course in the path usr/share/codam/web-greeter, not in usr/share/42 that likely already exists.
+# The codam-web-greeter will still work without these files, they are not required.
+# Most campuses already have their logo embedded in their login screen, so this is just a nice-to-have.
+# Using this over the embedded logo makes the logo move when required by the login screen UI, instead of being stuck in place.
+- name: Copy greeter logo and user images
+  tags: [never, codam.webgreeter.cplogo]
+  become: true
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: '0644'
+  with_items:
+    - { src: usr/share/codam/web-greeter/logo.png, dest: /usr/share/codam/web-greeter/logo.png }
+    - { src: usr/share/codam/web-greeter/user.png, dest: /usr/share/codam/web-greeter/user.png }
+
+- name: Link wallpaper
+  tags: [codam.webgreeter, codam.webgreeter.setup]
+  become: true
+  file:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    state: link
+  with_items:
+    - { src: /usr/share/42/bg.png, dest: /usr/share/codam/web-greeter/login-screen.png }
+
+- name: Copy web-greeter config
+  tags: [codam.webgreeter, codam.webgreeter.setup]
+  become: true
+  copy:
+    src: etc/lightdm/web-greeter.yml
+    dest: /etc/lightdm/web-greeter.yml
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Configure lightdm to use nody-greeter
+  tags: [codam.webgreeter, codam.webgreeter.setup]
+  become: true
+  lineinfile:
+    path: /etc/lightdm/lightdm.conf
+    line: greeter-session=nody-greeter
+    insertafter: "[SeatDefaults]"
+    state: present
+
+- name: Allow user-switching in lightdm
+  tags: [codam.webgreeter, codam.webgreeter.setup]
+  become: true
+  lineinfile:
+    path: /etc/lightdm/lightdm.conf
+    line: {{ item }}
+    insertafter: "[SeatDefaults]"
+    state: present
+  with_items:
+    - 'allow-guest=false'
+    - 'allow-user-switching=true'
+    - 'greeter-hide-users=true'
+    - 'greeter-show-manual-login=true'
+
+- name: Copy greeter-setup script
+  tags: [codam.webgreeter, codam.webgreeter.setup]
+  become: true
+  template:
+    src: usr/share/codam/web-greeter/greeter-setup.sh.j2
+    dest: /usr/share/codam/web-greeter/greeter-setup.sh
+    owner: root
+    group: root
+    mode: '0500'
+
+- name: Add user uncaching to logout hooks
+  tags: [codam.webgreeter, codam.webgreeter.setup]
+  become: true
+  copy:
+    src: usr/share/42/scripts/hooks.d/logout.d/10-dbus.sh
+    dest: /usr/share/42/scripts/hooks.d/logout.d/10-dbus.sh
+    owner: root
+    group: root
+    mode: '0500'
+
+- name: Find the hook-logout script used in hooks.d/logout.d (ending in hook-logout.sh)
+  tags: [codam.webgreeter, codam.webgreeter.setup]
+  shell: "find /usr/share/42/scripts/hooks.d/logout.d -name '*hook-logout.sh'"
+  register: hook_logout_script
+  failed_when: hook_logout_script.stdout == ""
+
+- name: Prevent hook-logout from running on login from the greeter
+  tags: [codam.webgreeter, codam.webgreeter.setup]
+  become: true
+  blockinfile:
+    path: "{{ hook_logout_script.stdout }}"
+    backup: false # otherwise it might get executed by ft-init!
+    prepend_newline: true
+    append_newline: true
+    insertafter: 'set -e'
+    block: |
+      # Check if the hook was called from a greeter exiting or a student session exiting
+      # Display :0 is used for the first greeter and gets reused for the student session.
+      # Display :1 is used for the second login (user switching, in fact the Codam lock screen).
+      # We do not allow switching users, so for :1 there is no user session
+      # to clean up for. Instead, the hook was called to clean up the greeter.
+      # No cleaning needs to be done for the greeter. So, we simply exit.
+      # Source: https://www.freedesktop.org/wiki/Software/LightDM/CommonConfiguration/
+      if [ "$DISPLAY" != ":0" ]; then
+        echo "Catched greeter logout event, exiting"
+        exit 0
+      fi
+
+- name: Allow rebooting from greeter
+  tags: [codam.webgreeter, codam.webgreeter.setup]
+  become: true
+  blockinfile:
+    path: /etc/polkit-1/localauthority/20-org.d/org.freedesktop.login1.pkla
+    prepend_newline: true
+    append_newline: true
+    insert_after: EOF
+    block: |
+      [42 Enable reboot by default for lightdm user]
+      Identity=unix-user:lightdm
+      Action=org.freedesktop.login1.reboot;org.freedesktop.login1.reboot-multiple-sessions;org.freedesktop.login1.reboot-ignore-inhibit;
+      ResultAny=yes
+      ResultInactive=yes
+      ResultActive=yes
+
+- name: Ignore power, suspend and hibernate keys
+  tags: [codam.webgreeter, codam.webgreeter.setup]
+  become: true
+  lineinfile:
+    path: /etc/systemd/logind.conf
+    line: {{ item }}
+    regexp: '^#?{{ item.split("=")[0] }}=' # regexp with optional comment start and up to the = sign to replace the value
+    state: present
+  with_items:
+    - 'HandlePowerKey=ignore'
+    - 'HandleSuspendKey=ignore'
+    - 'HandleHibernateKey=ignore'
+  register: logind_ignore_power_keys
+
+- name: Check if no user is currently logged in
+  tags: [codam.webgreeter, codam.webgreeter.setup]
+  shell: "who | grep -v {{ ansible_user }}"
+  register: logged_in_users
+  failed_when: false
+  changed_when: false
+
+- name: Restart logind
+  tags: [codam.webgreeter, codam.webgreeter.setup]
+  become: true
+  service:
+    name: systemd-logind
+    state: restarted
+  when: logged_in_users.stdout == "" and logind_ignore_power_keys.changed
+
+- name: Restart lightdm
+  tags: [codam.webgreeter, codam.webgreeter.setup]
+  become: true
+  service:
+    name: lightdm
+    state: restarted
+  when: logged_in_users.stdout == ""
