@@ -12,10 +12,9 @@
     name: "{{ item }}"
     state: present
   with_items:
-    - lightdm
     - light-locker
     - xprintidle
-  # Assume nodejs and npm are already installed
+  # Assume lightdm, nodejs and npm are already installed by 42.app
 
 - name: Download nody-greeter deb
   tags: [codam.webgreeter, codam.webgreeter.init]
