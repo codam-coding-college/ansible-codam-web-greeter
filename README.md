@@ -18,11 +18,11 @@ Then run the following command to install the role:
 ansible-galaxy install -r requirements.yml
 ```
 
-Add the role to your `site.yml` playbook as the last role executed:
+Add the role to your `site.yml` playbook as the last role executed (do not define tags here, this is unneccessary and is a mistake 42 made for all the other roles):
 ```yaml
 roles:
   ...
-  - { role: codam.webgreeter, tags: [codam.webgreeter]}
+  - { role: codam.webgreeter }
 ```
 
 Congratulations, the codam-web-greeter will now be installed on your cluster computers when you run the `site.yml` playbook! You can run it with the tag `codam.webgreeter` to only run the steps for the codam-web-greeter specifically.
