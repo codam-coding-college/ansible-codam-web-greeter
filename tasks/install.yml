@@ -35,18 +35,16 @@
 
 - name: Build codam-web-greeter
   tags: [codam.webgreeter, codam.webgreeter.install]
-  shell:
-    cmd: "make build"
+  make:
     chdir: /tmp/codam-web-greeter
-    executable: /bin/bash
+    target: build
 
 - name: Install codam-web-greeter
   tags: [codam.webgreeter, codam.webgreeter.install]
   become: true
-  shell:
-    cmd: "sudo make install"
+  make:
     chdir: /tmp/codam-web-greeter
-    executable: /bin/bash
+    target: install
 
 - name: Fetch initial codam-web-greeter data.json from server
   tags: [codam.webgreeter, codam.webgreeter.install]
