@@ -15,6 +15,7 @@
     - lightdm
     - light-locker
     - xprintidle
+  # Assume nodejs and npm are already installed
 
 - name: Download nody-greeter deb
   tags: [codam.webgreeter, codam.webgreeter.init]

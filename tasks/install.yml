@@ -17,25 +17,33 @@
     group: root
     mode: '0755'
 
+- name: Clone codam-web-greeter git
+  tags: [codam.webgreeter, codam.webgreeter.install]
+  git:
+    repo: "{{ codam_web_greeter_git_repo }}"
+    dest: /tmp/codam-web-greeter
+    version: "{{ codam_web_greeter_version }}"
+
+- name: Set data-server-url
+  tags: [codam.webgreeter, codam.webgreeter.install]
+  lineinfile:
+    path: /tmp/codam-web-greeter/static/settings.ini
+    line: "data-server-url={{ codam_web_greeter_data_server_url }}"
+    state: present
+    regexp: '^data-server-url='
+
+- name: Build codam-web-greeter
+  tags: [codam.webgreeter, codam.webgreeter.install]
+  make:
+    chdir: /tmp/codam-web-greeter
+    target: build
+
 - name: Install codam-web-greeter
   tags: [codam.webgreeter, codam.webgreeter.install]
   become: true
-  unarchive:
-    src: "{{ codam_web_greeter_git_repo }}/releases/download/{{ codam_web_greeter_version }}/{{ codam_web_greeter_release_zip_filename }}"
-    remote_src: true
-    dest: /usr/share/web-greeter/themes/codam
-    creates: /usr/share/web-greeter/themes/codam/package.json
-    owner: root
-    group: root
-    # no mode, zip file has its own permissions
-
-- name: Install codam-web-greeter systemd services
-  tags: [codam.webgreeter, codam.webgreeter.install]
-  become: true
-  shell:
-    cmd: "bash install.sh"
-    executable: /bin/bash
-    chdir: /usr/share/web-greeter/themes/codam/systemd
+  make:
+    chdir: /tmp/codam-web-greeter
+    target: install
 
 - name: Fetch initial codam-web-greeter data.json from server
   tags: [codam.webgreeter, codam.webgreeter.install]
