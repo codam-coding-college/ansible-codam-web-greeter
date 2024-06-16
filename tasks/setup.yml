@@ -63,7 +63,7 @@
   become: true
   lineinfile:
     path: /etc/lightdm/lightdm.conf
-    line: {{ item }}
+    line: "{{ item }}"
     insertafter: "[SeatDefaults]"
     state: present
   with_items:
@@ -141,7 +141,7 @@
   become: true
   lineinfile:
     path: /etc/systemd/logind.conf
-    line: {{ item }}
+    line: "{{ item }}"
     regexp: '^#?{{ item.split("=")[0] }}=' # regexp with optional comment start and up to the = sign to replace the value
     state: present
   with_items:
