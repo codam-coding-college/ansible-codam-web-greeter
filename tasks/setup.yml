@@ -108,7 +108,7 @@
   blockinfile:
     path: "{{ hook_logout_script.stdout }}"
     backup: false # otherwise it might get executed by ft-init!
-    insertafter: 'set -e'
+    insertafter: 'env'
     block: |
       # Check if the hook was called from a greeter exiting or a student session exiting
       # Display :0 is used for the first greeter and gets reused for the student session.
