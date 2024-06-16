@@ -1,10 +1,10 @@
 ---
 nody_greeter_version: "1.5.2"
 
-# Specify where to download the codam-web-greeter from and which release to use.
+# Specify where to download the codam-web-greeter from and which tag/release to use.
 # Fork the codam-web-greeter repository and point this URL to your fork if you need to use a custom version.
 codam_web_greeter_git_repo: "https://github.com/codam-coding-college/codam-web-greeter"
-codam_web_greeter_version: "1.0.10"
+codam_web_greeter_version: "v1.0.10"
 
 # Specify the url to fetch configuration data from. Hostname is appended to the url, so make sure it ends with a slash.
 codam_web_greeter_data_server_url: "https://clusterdata.codam.nl/api/config/"
