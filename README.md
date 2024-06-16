@@ -1,17 +1,17 @@
 # Ansible playbook for codam-web-greeter
-This Ansible playbook installs [codam-web-greeter](https://github.com/codam-coding-college/codam-web-greeter) on a 42 network cluster computer. Install it using Ansible Galaxy.
+This Ansible playbook installs [codam-web-greeter](https://github.com/codam-coding-college/codam-web-greeter) on a 42 network cluster computer. It is intended to be used by IT staff at 42 schools to install the greeter theme on all cluster computers at once without too much effort.
 
 ---
 
 ## How to use
-Add the following to the roles in your `requirements.yml` file:
+Add the following to the roles in your `requirements.yml` file in your `ansiblecluster` repository:
 ```yaml
 roles:
   - name: codam.webgreeter
     src: git+https://github.com/codam-coding-college/ansible-codam-web-greeter.git
     version: v1.0.0
 ```
-It is recommended to change the version to the latest one defined on the [Releases](https://github.com/codam-coding-college/ansible-codam-web-greeter/releases) page.
+It is recommended to change the version specified to the latest one from the [Releases](https://github.com/codam-coding-college/ansible-codam-web-greeter/releases) page. Please note that this version is specific to this playbook and does not necessarily match the version of the codam-web-greeter itself.
 
 Then run the following command to install the role:
 ```bash
@@ -37,3 +37,13 @@ However, keep in mind that most campuses feature their logo already in the wallp
 Using this feature over the logo embedded in the wallpaper has the advantage that the logo can be shifted around and resized more easily when required by the login screen's user interface.
 
 It is also possible to specify a default user image in case the user's `~/.face` file is not present in their home folder. This image should be named `user.png` and be placed in the same directory as the logo. The default 42 user image can be found [here](https://github.com/codam-coding-college/ansible-codam-web-greeter/blob/main/files/usr/share/codam/web-greeter/user.png). If no default user image is present on the system, no image will be displayed on the lock screen at all and it will just display the student's name.
+
+## Variables
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `nody_greeter_version` | `1.5.2` | The version of the nody-greeter to install from GitHub. |
+| `codam_web_greeter_git_repo` | `https://github.com/codam-coding-college/codam-web-greeter` | The repository to download codam-web-greeter from. |
+| `codam_web_greeter_version` | `v1.0.10` | The version of codam-web-greeter to download (use a tag or a branch name from the git repo). |
+| `codam_web_greeter_data_server_url` | `https://clusterdata.codam.nl/api/config/` | The URL to the data server to download the greeter data from. Hostname is appended to the url, so make sure it ends with a slash. |
+| `dbus_cache_group_check_enabled` | `false` | Whether to check if a user is in a specific ldap group before adding it to the dbus cache. Usually this is not required. |
+| `dbus_cache_group_check_group` | `student` | The group to check for. |
