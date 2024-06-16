@@ -36,4 +36,4 @@ However, keep in mind that most campuses feature their logo already in the wallp
 
 Using this feature over the logo embedded in the wallpaper has the advantage that the logo can be shifted around and resized more easily when required by the login screen's user interface.
 
-It is also possible to specify a default user image in case the user's `~/.face` file is not present in their home folder. This image should be named `user.png` and be placed in the same directory as the logo. The default 42 user image can be found [here](https://github.com/codam-coding-college/codam-web-greeter/blob/main/static/assets/default-user.png).
+It is also possible to specify a default user image in case the user's `~/.face` file is not present in their home folder. This image should be named `user.png` and be placed in the same directory as the logo. The default 42 user image can be found [here](https://github.com/codam-coding-college/ansible-codam-web-greeter/blob/main/files/usr/share/codam/web-greeter/user.png). If no default user image is present on the system, no image will be displayed on the lock screen at all and it will just display the student's name.
