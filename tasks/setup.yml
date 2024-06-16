@@ -72,15 +72,25 @@
     - 'greeter-hide-users=true'
     - 'greeter-show-manual-login=true'
 
-- name: Copy greeter-setup script
+- name: Copy greeter-setup hook script
   tags: [codam.webgreeter, codam.webgreeter.setup]
   become: true
   template:
-    src: usr/share/codam/web-greeter/greeter-setup.sh.j2
-    dest: /usr/share/codam/web-greeter/greeter-setup.sh
+    src: usr/share/42/scripts/hook-greeter-setup.sh.j2
+    dest: /usr/share/42/scripts/hook-greeter-setup.sh
     owner: root
     group: root
     mode: '0500'
+
+- name: Enable greeter-setup hook in lightdm
+  tags: [codam.webgreeter, codam.webgreeter.setup]
+  become: true
+  lineinfile:
+    path: /etc/lightdm/lightdm.conf
+    line: greeter-setup-script=/usr/share/42/scripts/hook-greeter-setup.sh
+    insertafter: "[SeatDefaults]"
+    state: present
+    regexp: '^#?greeter-setup-script='
 
 - name: Add user uncaching to logout hooks
   tags: [codam.webgreeter, codam.webgreeter.setup]
