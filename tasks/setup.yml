@@ -133,7 +133,7 @@
   become: true
   blockinfile:
     path: /etc/polkit-1/localauthority/20-org.d/org.freedesktop.login1.pkla
-    insert_after: EOF
+    insertafter: EOF
     block: |
       [42 Enable reboot by default for lightdm user]
       Identity=unix-user:lightdm
