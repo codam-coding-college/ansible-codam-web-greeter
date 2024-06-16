@@ -1,9 +1,9 @@
 ---
-- name: Create /usr/share/codam directory
+- name: Create /usr/share/codam/web-greeter directory
   tags: [codam.webgreeter, codam.webgreeter.setup]
   become: true
   file:
-    path: /usr/share/codam
+    path: /usr/share/codam/web-greeter
     state: directory
     owner: root
     group: root
