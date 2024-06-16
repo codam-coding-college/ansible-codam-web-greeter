@@ -49,24 +49,17 @@
     group: root
     mode: '0644'
 
-- name: Configure lightdm to use nody-greeter
-  tags: [codam.webgreeter, codam.webgreeter.setup]
-  become: true
-  lineinfile:
-    path: /etc/lightdm/lightdm.conf
-    line: greeter-session=nody-greeter
-    insertafter: "[SeatDefaults]"
-    state: present
-
-- name: Allow user-switching in lightdm
+- name: Configure lightdm
   tags: [codam.webgreeter, codam.webgreeter.setup]
   become: true
   lineinfile:
     path: /etc/lightdm/lightdm.conf
     line: "{{ item }}"
     insertafter: "[SeatDefaults]"
+    regexp: '^#?{{ item.split("=")[0] }}=' # regexp with optional comment start and up to the = sign to replace the value
     state: present
   with_items:
+    - 'greeter-session=nody-greeter'
     - 'allow-guest=false'
     - 'allow-user-switching=true'
     - 'greeter-hide-users=true'
