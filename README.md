@@ -8,8 +8,8 @@ Add the following to the roles in your `requirements.yml` file:
 ```yaml
 roles:
   - name: codam.webgreeter
-	src: git+https://github.com/codam-coding-college/ansible-codam-web-greeter.git
-	version: v1.0.0
+    src: git+https://github.com/codam-coding-college/ansible-codam-web-greeter.git
+    version: v1.0.0
 ```
 It is recommended to change the version to the latest one defined on the [Releases](https://github.com/codam-coding-college/ansible-codam-web-greeter/releases) page.
 
