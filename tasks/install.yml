@@ -23,6 +23,7 @@
     repo: "{{ codam_web_greeter_git_repo }}"
     dest: /tmp/codam-web-greeter
     version: "{{ codam_web_greeter_version }}"
+    force: true
 
 - name: Set data-server-url
   tags: [codam.webgreeter, codam.webgreeter.install]
