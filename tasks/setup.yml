@@ -114,8 +114,6 @@
   blockinfile:
     path: "{{ hook_logout_script.stdout }}"
     backup: false # otherwise it might get executed by ft-init!
-    prepend_newline: true
-    append_newline: true
     insertafter: 'set -e'
     block: |
       # Check if the hook was called from a greeter exiting or a student session exiting
@@ -135,8 +133,6 @@
   become: true
   blockinfile:
     path: /etc/polkit-1/localauthority/20-org.d/org.freedesktop.login1.pkla
-    prepend_newline: true
-    append_newline: true
     insert_after: EOF
     block: |
       [42 Enable reboot by default for lightdm user]
