@@ -39,11 +39,11 @@ Using this feature over the logo embedded in the wallpaper has the advantage tha
 It is also possible to specify a default user image in case the user's `~/.face` file is not present in their home folder. This image should be named `user.png` and be placed in the same directory as the logo. The default 42 user image can be found [here](https://github.com/codam-coding-college/ansible-codam-web-greeter/blob/main/files/usr/share/codam/web-greeter/user.png). If no default user image is present on the system, no image will be displayed on the lock screen at all and it will just display the student's name.
 
 ## Variables
-| Variable | Default | Description |
+| Variable | Description | Default value |
 |----------|---------|-------------|
-| `nody_greeter_version` | `1.5.2` | The version of the nody-greeter to install from GitHub. |
-| `codam_web_greeter_git_repo` | `https://github.com/codam-coding-college/codam-web-greeter` | The repository to download codam-web-greeter from. |
-| `codam_web_greeter_version` | `v1.0.10` | The version of codam-web-greeter to download (use a tag or a branch name from the git repo). |
-| `codam_web_greeter_data_server_url` | `https://clusterdata.codam.nl/api/config/` | The URL to the data server to download the greeter data from. Hostname is appended to the url, so make sure it ends with a slash. |
-| `dbus_cache_group_check_enabled` | `false` | Whether to check if a user is in a specific ldap group before adding it to the dbus cache. Usually this is not required. |
-| `dbus_cache_group_check_group` | `student` | The group to check for. |
+| `nody_greeter_version` | The version of the nody-greeter to install from GitHub. | `1.5.2` |
+| `codam_web_greeter_git_repo` | The repository to download codam-web-greeter from. | `https://github.com/codam-coding-college/codam-web-greeter` |
+| `codam_web_greeter_version` | The version of codam-web-greeter to download (use a tag or a branch name from the git repo). | `v1.0.11` |
+| `codam_web_greeter_data_server_url` | The URL to the data server to download the greeter data from. Hostname is appended to the url, so make sure it ends with a slash. | `https://clusterdata.codam.nl/api/config/` |
+| `dbus_cache_group_check_enabled`| Whether to check if a user is in a specific ldap group before adding it to the dbus cache. Usually this is not required. | `false` |
+| `dbus_cache_group_check_group`| The group to check for. | `student` |
