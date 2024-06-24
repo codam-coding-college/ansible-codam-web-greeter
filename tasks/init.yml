@@ -1,10 +1,10 @@
 ---
 - name: Check if lightdm is installed
   tags: [codam.webgreeter, codam.webgreeter.init]
-  stat:
-    path: /usr/sbin/lightdm
-  register: lightdm_bin
-  failed_when: lightdm_bin.stat.exists == False
+  shell:
+    cmd: "dpkg-query -W -f='${Status}' lightdm"
+  register: lightdm_pkg
+  failed_when: lightdm_pkg.stdout.find("install ok installed") == -1
 
 - name: Install dependencies
   tags: [codam.webgreeter, codam.webgreeter.init]
@@ -16,14 +16,22 @@
     - xprintidle
   # Assume lightdm, nodejs and npm are already installed by 42.app
 
+- name: Check if nody-greeter is installed
+  tags: [codam.webgreeter, codam.webgreeter.init]
+  shell:
+    cmd: "dpkg-query -W -f='${Status}' nody-greeter"
+  register: nody_greeter_pkg
+
 - name: Download nody-greeter deb
   tags: [codam.webgreeter, codam.webgreeter.init]
   get_url:
     url: "https://github.com/JezerM/nody-greeter/releases/download/{{ nody_greeter_version }}/nody-greeter-{{ nody_greeter_version }}-ubuntu.deb"
     dest: "/tmp/nody-greeter-{{ nody_greeter_version }}-ubuntu.deb"
+  when: nody_greeter_pkg.stdout.find("install ok installed") == -1
 
 - name: Install nody-greeter
   tags: [codam.webgreeter, codam.webgreeter.init]
   apt:
     deb: "/tmp/nody-greeter-{{ nody_greeter_version }}-ubuntu.deb"
     state: present
+  when: nody_greeter_pkg.stdout.find("install ok installed") == -1
