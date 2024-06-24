@@ -5,6 +5,7 @@
     cmd: "dpkg-query -W -f='${Status}' lightdm"
   register: lightdm_pkg
   failed_when: lightdm_pkg.stdout.find("install ok installed") == -1
+  changed_when: false
 
 - name: Install dependencies
   tags: [codam.webgreeter, codam.webgreeter.init]
@@ -20,6 +21,7 @@
   tags: [codam.webgreeter, codam.webgreeter.init]
   shell:
     cmd: "dpkg-query -W -f='${Status}' nody-greeter"
+  changed_when: false
   register: nody_greeter_pkg
 
 - name: Download nody-greeter deb
