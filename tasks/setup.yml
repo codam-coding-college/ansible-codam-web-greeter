@@ -37,7 +37,7 @@
     dest: "{{ item.dest }}"
     state: link
   with_items:
-    - { src: /usr/share/42/login-screen.jpg, dest: /usr/share/codam/web-greeter/login-screen.png } # yes, jpg to png. The greeter can handle this
+    - { src: "{{ login_wallpaper_path }}", dest: /usr/share/codam/web-greeter/login-screen.png } # file extension doesn't matter, the greeter will display it anyway
 
 - name: Copy web-greeter config
   tags: [codam.webgreeter, codam.webgreeter.setup]

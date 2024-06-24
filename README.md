@@ -34,7 +34,7 @@ Congratulations, the codam-web-greeter will now be installed on your cluster com
 ### Campus logo
 Now, the following is optional but recommended: add your campus's logo to the `campus_files` directory in your `ansiblecluster` repository. The logo should be named `logo.png` and be placed in `campus_files/usr/share/codam/web-greeter/`. It will then get copied to the cluster computer and displayed by the login screen.
 
-However, keep in mind that most campuses feature their logo already in the wallpaper used by the login screen provided by 42/Ubuntu. In this case, the logo would be displayed twice by the login screen. It is recommended to remove the logo from your login screen wallpaper.
+However, keep in mind that most campuses feature their logo already in the wallpaper used by the login screen provided by 42/Ubuntu. In this case, the logo would be displayed twice by the login screen. It is recommended to remove the logo from your login screen wallpaper or to use a custom wallpaper without the logo (defined in the `login_wallpaper_path` variable) to avoid this.
 
 Using this feature over the logo embedded in the wallpaper has the advantage that the logo can be shifted around and resized more easily when required by the login screen's user interface.
 
@@ -49,3 +49,4 @@ It is also possible to specify a default user image in case the user's `~/.face`
 | `codam_web_greeter_data_server_url` | The URL to the data server to download the greeter data from. Hostname is appended to the url, so make sure it ends with a slash. | `https://clusterdata.codam.nl/api/config/` |
 | `dbus_cache_group_check_enabled`| Whether to check if a user is in a specific ldap group before adding it to the dbus cache. Usually this is not required. | `false` |
 | `dbus_cache_group_check_group`| The group to check for. | `student` |
+| `login_wallpaper_path` | The path to the login wallpaper to set. | `/usr/share/42/login-screen.jpg` |

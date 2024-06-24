@@ -12,3 +12,5 @@ codam_web_greeter_data_server_url: "https://clusterdata.codam.nl/api/config/"
 # Define whether or not to check if the user is in a specific group when caching their user data with dbus
 dbus_cache_group_check_enabled: false
 dbus_cache_group_check_group: "student" # default ou=student,ou=groups,dc=42campus,dc=org
+
+login_wallpaper_path: "/usr/share/42/login-screen.jpg"
