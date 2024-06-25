@@ -22,6 +22,7 @@
   shell:
     cmd: "dpkg-query -W -f='${Status}' nody-greeter"
   changed_when: false
+  failed_when: false
   register: nody_greeter_pkg
 
 - name: Download nody-greeter deb
