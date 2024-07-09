@@ -66,6 +66,26 @@
     - 'greeter-hide-users=true'
     - 'greeter-show-manual-login=true'
 
+- name: Copy display-setup hook script
+  tags: [codam.webgreeter, codam.webgreeter.setup]
+  become: true
+  template:
+    src: usr/share/42/scripts/hook-display-setup.sh.j2
+    dest: /usr/share/42/scripts/hook-display-setup.sh
+    owner: root
+    group: root
+    mode: '0500'
+
+- name: Enable display-setup hook in lightdm
+  tags: [codam.webgreeter, codam.webgreeter.setup]
+  become: true
+  lineinfile:
+    path: /etc/lightdm/lightdm.conf
+    line: display-setup-script=/usr/share/42/scripts/hook-display-setup.sh
+    insertbefore: 'session-setup-script='
+    state: present
+    regexp: '^#?display-setup-script='
+
 - name: Copy greeter-setup hook script
   tags: [codam.webgreeter, codam.webgreeter.setup]
   become: true

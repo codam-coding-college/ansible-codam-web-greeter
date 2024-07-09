@@ -3,15 +3,13 @@
 {% if ansible_system_vendor == 'Apple Inc.' %}
 # Set brightness on Apple hardware
 # Check if the brightness-default.sh script exists in the same directory (provided by 42).
+# For some reason 42 runs this script for the greeter-setup, not display-setup hook in lightdm.
 # Could implement the same behavior, but if it changes in 42.common we'd need to change it here as well.
 # Better to just source it if it exists.
 if [ -f "$(dirname $0)/brightness-default.sh" ]; then
 	source "$(dirname $0)/brightness-default.sh"
 fi
 {% endif %}
-
-# Prevent the screen from going to sleep
-/usr/bin/xset s off
 
 # Turn on Num Lock on the keyboard
 /usr/bin/numlockx on
