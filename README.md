@@ -9,7 +9,7 @@ Add the following to the roles in your `requirements.yml` file in your `ansiblec
 roles:
   - name: codam.webgreeter
     src: git+https://github.com/codam-coding-college/ansible-codam-web-greeter.git
-    version: v1.1.0
+    version: v1.2.0
 ```
 It is recommended to change the version specified to the latest one from the [Releases](https://github.com/codam-coding-college/ansible-codam-web-greeter/releases) page. Please note that this version is specific to this playbook and does not necessarily match the version of the codam-web-greeter itself.
 
@@ -45,7 +45,7 @@ It is also possible to specify a default user image in case the user's `~/.face`
 |----------|---------|-------------|
 | `nody_greeter_version` | The version of the nody-greeter to install from GitHub. | `1.5.2` |
 | `codam_web_greeter_git_repo` | The repository to download codam-web-greeter from. | `https://github.com/codam-coding-college/codam-web-greeter` |
-| `codam_web_greeter_version` | The version of codam-web-greeter to download (use a tag or a branch name from the git repo). | `v1.0.11` |
+| `codam_web_greeter_version` | The version of codam-web-greeter to download (use a tag or a branch name from the git repo). | `v1.1.0` |
 | `codam_web_greeter_data_server_url` | The URL to the data server to download the greeter data from. Hostname is appended to the url, so make sure it ends with a slash. | `https://clusterdata.codam.nl/api/config/` |
 | `dbus_cache_group_check_enabled`| Whether to check if a user is in a specific ldap group before adding it to the dbus cache. Usually this is not required. | `false` |
 | `dbus_cache_group_check_group`| The group to check for. | `student` |
