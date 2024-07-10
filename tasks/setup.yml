@@ -67,7 +67,7 @@
     - 'greeter-show-manual-login=true'
 
 - name: Copy display-setup hook script
-  tags: [codam.webgreeter, codam.webgreeter.setup]
+  tags: [codam.webgreeter, codam.webgreeter.setup, hooks.d]
   become: true
   template:
     src: usr/share/42/scripts/hook-display-setup.sh.j2
@@ -77,7 +77,7 @@
     mode: '0500'
 
 - name: Enable display-setup hook in lightdm
-  tags: [codam.webgreeter, codam.webgreeter.setup]
+  tags: [codam.webgreeter, codam.webgreeter.setup, hooks.d]
   become: true
   lineinfile:
     path: /etc/lightdm/lightdm.conf
@@ -87,7 +87,7 @@
     regexp: '^#?display-setup-script='
 
 - name: Copy greeter-setup hook script
-  tags: [codam.webgreeter, codam.webgreeter.setup]
+  tags: [codam.webgreeter, codam.webgreeter.setup, hooks.d]
   become: true
   template:
     src: usr/share/42/scripts/hook-greeter-setup.sh.j2
@@ -97,7 +97,7 @@
     mode: '0500'
 
 - name: Enable greeter-setup hook in lightdm
-  tags: [codam.webgreeter, codam.webgreeter.setup]
+  tags: [codam.webgreeter, codam.webgreeter.setup, hooks.d]
   become: true
   lineinfile:
     path: /etc/lightdm/lightdm.conf
@@ -107,7 +107,7 @@
     regexp: '^#?greeter-setup-script='
 
 - name: Add user uncaching to logout hooks
-  tags: [codam.webgreeter, codam.webgreeter.setup]
+  tags: [codam.webgreeter, codam.webgreeter.setup, hooks.d]
   become: true
   copy:
     src: usr/share/42/scripts/hooks.d/logout.d/10-dbus.sh
@@ -117,13 +117,13 @@
     mode: '0500'
 
 - name: Find the hook-logout script used in hooks.d/logout.d (ending in hook-logout.sh)
-  tags: [codam.webgreeter, codam.webgreeter.setup]
+  tags: [codam.webgreeter, codam.webgreeter.setup, hooks.d]
   shell: "find /usr/share/42/scripts/hooks.d/logout.d -name '*hook-logout.sh'"
   register: hook_logout_script
   failed_when: hook_logout_script.stdout == ""
 
 - name: Prevent hook-logout from running on login from the greeter
-  tags: [codam.webgreeter, codam.webgreeter.setup]
+  tags: [codam.webgreeter, codam.webgreeter.setup, hooks.d]
   become: true
   blockinfile:
     path: "{{ hook_logout_script.stdout }}"
