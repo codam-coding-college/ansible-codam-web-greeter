@@ -1,5 +1,5 @@
 ---
-nody_greeter_version: "1.5.2"
+nody_greeter_version: "1.6.2"
 
 # Specify where to download the codam-web-greeter from and which tag/release to use.
 # Fork the codam-web-greeter repository and point this URL to your fork if you need to use a custom version.

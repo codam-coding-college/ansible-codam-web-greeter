@@ -43,7 +43,7 @@ It is also possible to specify a default user image in case the user's `~/.face`
 ## Variables
 | Variable | Description | Default value |
 |----------|---------|-------------|
-| `nody_greeter_version` | The version of the nody-greeter to install from GitHub. | `1.5.2` |
+| `nody_greeter_version` | The version of the nody-greeter to install from GitHub. | `1.6.2` |
 | `codam_web_greeter_git_repo` | The repository to download codam-web-greeter from. | `https://github.com/codam-coding-college/codam-web-greeter` |
 | `codam_web_greeter_version` | The version of codam-web-greeter to download (use a tag or a branch name from the git repo). | `v1.1.0` |
 | `codam_web_greeter_data_server_url` | The URL to the data server to download the greeter data from. Hostname is appended to the url, so make sure it ends with a slash. | `https://clusterdata.codam.nl/api/config/` |
