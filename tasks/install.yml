@@ -1,4 +1,5 @@
 ---
+# TODO: package.json is missing in the installed files so we need to find another way to check the version
 - name: Uninstall outdated codam-web-greeter
   tags: [codam.webgreeter, codam.webgreeter.install]
   become: true
