@@ -17,10 +17,10 @@
     - xprintidle
   # Assume lightdm, nodejs and npm are already installed by 42.app
 
-- name: Check if nody-greeter is installed
+- name: Check if nody-greeter is installed and on the correct version
   tags: [codam.webgreeter, codam.webgreeter.init]
   shell:
-    cmd: "dpkg-query -W -f='${Status}' nody-greeter"
+    cmd: "dpkg-query -W -f='${Status} ${Version}' nody-greeter"
   changed_when: false
   failed_when: false
   register: nody_greeter_pkg
@@ -30,11 +30,11 @@
   get_url:
     url: "https://github.com/JezerM/nody-greeter/releases/download/{{ nody_greeter_version }}/nody-greeter-{{ nody_greeter_version }}-ubuntu.deb"
     dest: "/tmp/nody-greeter-{{ nody_greeter_version }}-ubuntu.deb"
-  when: nody_greeter_pkg.stdout.find("install ok installed") == -1
+  when: nody_greeter_pkg.stdout.find("install ok installed {{ nody_greeter_version }}") == -1
 
 - name: Install nody-greeter
   tags: [codam.webgreeter, codam.webgreeter.init]
   apt:
     deb: "/tmp/nody-greeter-{{ nody_greeter_version }}-ubuntu.deb"
     state: present
-  when: nody_greeter_pkg.stdout.find("install ok installed") == -1
+  when: nody_greeter_pkg.stdout.find("install ok installed {{ nody_greeter_version }}") == -1
