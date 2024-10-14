@@ -20,6 +20,11 @@ USER_SESSIONS=$(/usr/bin/loginctl list-sessions --no-legend)
 # Loop over all active sessions and cache them with dbus-send + store a locked_at_timestamp file in the /tmp folder
 # This is required for the codam-web-greeter and other lock screens to work properly (fetch the list of users)
 while IFS= read -r SESSION; do
+	# Skip empty lines
+	if [ -z "$SESSION" ]; then
+		continue
+	fi
+
 	SESSION_ID=$(echo "$SESSION" | /usr/bin/awk '{print $1}')
 	USER=$(echo "$SESSION" | /usr/bin/awk '{print $3}')
 
