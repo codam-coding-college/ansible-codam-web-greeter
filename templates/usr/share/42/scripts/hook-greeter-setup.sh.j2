@@ -45,5 +45,5 @@ while IFS= read -r SESSION; do
 	# Create a locked_at_timestamp file in /tmp
 	SESSION_LEADER=$(/usr/bin/loginctl show-session --property=Leader --value "$SESSION_ID")
 	LOCKED_AT_TIMESTAMP=$(date +%s) # Assume the session is locked at the time of greeter-setup
-	echo "$LOCKED_AT_TIMESTAMP" > "/tmp/lock_time_${USER}_${SESSION_ID}_${SESSION_LEADER}"
+	echo "$LOCKED_AT_TIMESTAMP $USER $SESSION_ID $SESSION_LEADER" > "/tmp/codam_web_greeter_lock_timestamp_$USER"
 done <<< "$USER_SESSIONS"
