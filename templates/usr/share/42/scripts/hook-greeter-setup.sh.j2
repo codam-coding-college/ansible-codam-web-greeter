@@ -15,15 +15,18 @@ fi
 /usr/bin/numlockx on
 
 # Get a list of all active user sessions on the system with loginctl
-USER_SESSIONS=$(/usr/bin/loginctl list-sessions --no-legend | /usr/bin/awk '{print $3}')
+USER_SESSIONS=$(/usr/bin/loginctl list-sessions --no-legend)
 
-# Loop over all active sessions and cache them with dbus-send
+# Loop over all active sessions and cache them with dbus-send + store a locked_at_timestamp file in the /tmp folder
 # This is required for the codam-web-greeter and other lock screens to work properly (fetch the list of users)
-for USER in $USER_SESSIONS; do
+for SESSION in $USER_SESSIONS; do
+	SESSION_ID=$(echo "$SESSION" | /usr/bin/awk '{print $1}')
+	USER=$(echo "$SESSION" | /usr/bin/awk '{print $3}')
+
 {% if dbus_cache_group_check_enabled == true %}
 	# Check if the user is in the piscine group
 	USER_GROUPS=$(/usr/bin/id -Gn "$USER")
-	if /usr/bin/grep -q '{{ dbus_cache_group_check_group }}' <<<"$USERGROUPS"; then
+	if /usr/bin/grep -q '{{ dbus_cache_group_check_group }}' <<<"$USER_GROUPS"; then
 		# If not, skip the user
 		echo "Skipping user caching for $USER, not in {{ dbus_cache_group_check_group }} group ($USER_GROUPS)"
 		continue
@@ -33,4 +36,9 @@ for USER in $USER_SESSIONS; do
 	# Cache the user
 	/usr/bin/dbus-send --system --print-reply --type=method_call --dest=org.freedesktop.Accounts /org/freedesktop/Accounts org.freedesktop.Accounts.CacheUser string:"$USER" || true
 	echo "Cached user $USER"
+
+	# Create a locked_at_timestamp file in /tmp
+	SESSION_LEADER=$(/usr/bin/loginctl show-session --property=Leader --value "$SESSION_ID")
+	LOCKED_AT_TIMESTAMP=$(date +%s) # Assume the session is locked at the time of greeter-setup
+	echo "$LOCKED_AT_TIMESTAMP" > "/tmp/lock_time_${USER}_${SESSION_ID}_${SESSION_LEADER}"
 done
