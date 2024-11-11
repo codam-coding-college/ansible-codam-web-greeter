@@ -47,6 +47,7 @@
   make:
     chdir: /tmp/codam-web-greeter
     target: install
+    params: "CLIENT_THEME={{ codam_web_greeter_theme }} CLIENT_THEME_BOXED={{ codam_web_greeter_boxed_mode }}"
 
 - name: Fetch initial codam-web-greeter data.json from server
   tags: [codam.webgreeter, codam.webgreeter.install]
