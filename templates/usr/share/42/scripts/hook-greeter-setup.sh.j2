@@ -11,6 +11,9 @@ if [ -f "$(dirname $0)/brightness-default.sh" ]; then
 fi
 {% endif %}
 
+# Prevent screen from blanking
+/usr/bin/xset s off
+
 # Turn on Num Lock on the keyboard
 /usr/bin/numlockx on
 

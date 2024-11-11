@@ -66,22 +66,19 @@
     - 'greeter-hide-users=true'
     - 'greeter-show-manual-login=true'
 
-- name: Copy display-setup hook script
-  tags: [codam.webgreeter, codam.webgreeter.setup, hooks.d]
+- name: Delete display-setup hook script
+  tags: [never, codam.webgreeter.revertdisplaysetup] # this task is only needed when you want to revert the display-setup hook changes made by version v1.2.0 - v1.2.1
   become: true
-  template:
-    src: usr/share/42/scripts/hook-display-setup.sh.j2
-    dest: /usr/share/42/scripts/hook-display-setup.sh
-    owner: root
-    group: root
-    mode: '0500'
+  file:
+    path: /usr/share/42/scripts/hook-display-setup.sh
+    state: absent
 
-- name: Enable display-setup hook in lightdm
-  tags: [codam.webgreeter, codam.webgreeter.setup, hooks.d]
+- name: Disable display-setup hook in lightdm
+  tags: [never, codam.webgreeter.revertdisplaysetup] # this task is only needed when you want to revert the display-setup hook changes made by version v1.2.0 - v1.2.1
   become: true
   lineinfile:
     path: /etc/lightdm/lightdm.conf
-    line: display-setup-script=/usr/share/42/scripts/hook-display-setup.sh
+    line: display-setup-script=
     insertbefore: 'session-setup-script='
     state: present
     regexp: '^#?display-setup-script='
