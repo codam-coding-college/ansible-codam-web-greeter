@@ -9,7 +9,7 @@ Add the following to the roles in your `requirements.yml` file in your `ansiblec
 roles:
   - name: codam.webgreeter
     src: git+https://github.com/codam-coding-college/ansible-codam-web-greeter.git
-    version: v1.3.0
+    version: v1.3.1
 ```
 It is recommended to change the version specified to the latest one from the [Releases](https://github.com/codam-coding-college/ansible-codam-web-greeter/releases) page. Please note that this version is specific to this playbook and does not necessarily match the version of the codam-web-greeter itself.
 
