@@ -78,10 +78,9 @@
   become: true
   lineinfile:
     path: /etc/lightdm/lightdm.conf
-    line: display-setup-script=
+    state: absent
     insertbefore: 'session-setup-script='
-    state: present
-    regexp: '^#?display-setup-script='
+    regexp: '^display-setup-script='
 
 - name: Copy greeter-setup hook script
   tags: [codam.webgreeter, codam.webgreeter.setup, hooks.d]
