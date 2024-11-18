@@ -126,6 +126,9 @@
     backup: false # otherwise it might get executed by ft-init!
     insertafter: 'env'
     block: |
+      # Delete any lock_time files in /tmp (used by codam-web-greeter to know when the screen was locked
+      # and when to automatically log out the user)
+      /usr/bin/rm -f /tmp/codam_web_greeter_lock_timestamp_*
       # Check if the hook was called from a greeter exiting or a student session exiting
       # Display :0 is used for the first greeter and gets reused for the student session.
       # Display :1 is used for the second login (user switching, in fact the Codam lock screen).
