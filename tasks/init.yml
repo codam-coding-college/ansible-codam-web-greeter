@@ -13,9 +13,58 @@
     name: "{{ item }}"
     state: present
   with_items:
-    - light-locker
-    - xprintidle
+    - light-locker # For locking the screen
+    - xprintidle # For detecting idle time of a user
+    - ddcci-dkms # For backlight control on external monitors
   # Assume lightdm, nodejs and npm are already installed by 42.app
+
+- name: Enable ddcci-backlight kernel module
+  tags: [codam.webgreeter, codam.webgreeter.init]
+  become: true
+  modprobe:
+    name: ddcci-backlight
+    state: present
+    persistent: present
+
+- name: Check if xbacklight binary exists
+  tags: [codam.webgreeter, codam.webgreeter.init]
+  shell:
+    cmd: "which xbacklight"
+  register: xbacklight_bin
+  changed_when: false
+  failed_when: false
+
+- name: Clone acpilight repository
+  tags: [codam.webgreeter, codam.webgreeter.init]
+  git:
+    repo: https://gitlab.com/wavexx/acpilight.git
+    dest: /tmp/acpilight
+    version: v1.2
+  when: xbacklight_bin.stdout == "" # Only when xbacklight is not already available (acpilight is a replacement and has better support)
+
+- name: Install acpilight
+  tags: [codam.webgreeter, codam.webgreeter.init]
+  become: true
+  make:
+    target: install
+    chdir: /tmp/acpilight
+  when: xbacklight_bin.stdout == ""
+
+- name: Check if video group exists # Only exists if acpilight was installed
+  tags: [codam.webgreeter, codam.webgreeter.init]
+  shell:
+    cmd: "getent group video"
+  register: video_group
+  changed_when: false
+  failed_when: false
+
+- name: Add lightdm user to video group
+  tags: [codam.webgreeter, codam.webgreeter.init]
+  user:
+    name: lightdm
+    groups: video
+    append: yes
+  when: video_group.stdout != ""
 
 - name: Download nody-greeter deb to ansible controller
   tags: [codam.webgreeter, codam.webgreeter.init]
