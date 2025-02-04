@@ -55,7 +55,7 @@
     name: lightdm
     groups: video
     append: yes
-  when: video_group.stdout == ""
+  when: video_group.stdout != ""
 
 - name: Download nody-greeter deb to ansible controller
   tags: [codam.webgreeter, codam.webgreeter.init]
