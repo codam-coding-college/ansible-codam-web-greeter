@@ -33,22 +33,6 @@
     persistent: present
   when: ddcci_backlight_support
 
-- name: Disable ddcci-backlight kernel module
-  tags: [codam.webgreeter, codam.webgreeter.init]
-  become: true
-  modprobe:
-    name: ddcci-backlight
-    state: absent
-    persistent: absent
-  when: not ddcci_backlight_support
-
-- name: Remove ddcci-dkms
-  tags: [codam.webgreeter, codam.webgreeter.init]
-  apt:
-    name: ddcci-dkms
-    state: absent
-  when: not ddcci_backlight_support
-
 - name: Check if xbacklight binary exists
   tags: [codam.webgreeter, codam.webgreeter.init]
   shell:
