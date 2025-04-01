@@ -15,8 +15,14 @@
   with_items:
     - light-locker # For locking the screen
     - xprintidle # For detecting idle time of a user
-    - ddcci-dkms # For backlight control on external monitors
   # Assume lightdm, nodejs and npm are already installed by 42.app
+
+- name: Install ddcci-dkms #  For backlight control on external monitors
+  tags: [codam.webgreeter, codam.webgreeter.init]
+  apt:
+    name: ddcci-dkms
+    state: present
+  when: ddcci_backlight_support
 
 - name: Enable ddcci-backlight kernel module
   tags: [codam.webgreeter, codam.webgreeter.init]
@@ -25,6 +31,23 @@
     name: ddcci-backlight
     state: present
     persistent: present
+  when: ddcci_backlight_support
+
+- name: Disable ddcci-backlight kernel module
+  tags: [codam.webgreeter, codam.webgreeter.init]
+  become: true
+  modprobe:
+    name: ddcci-backlight
+    state: absent
+    persistent: absent
+  when: not ddcci_backlight_support
+
+- name: Remove ddcci-dkms
+  tags: [codam.webgreeter, codam.webgreeter.init]
+  apt:
+    name: ddcci-dkms
+    state: absent
+  when: not ddcci_backlight_support
 
 - name: Check if xbacklight binary exists
   tags: [codam.webgreeter, codam.webgreeter.init]

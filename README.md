@@ -52,3 +52,4 @@ It is also possible to specify a default user image in case the user's `~/.face`
 | `dbus_cache_group_check_enabled`| Whether to check if a user is in a specific ldap group before adding it to the dbus cache. Usually this is not required. | `false` |
 | `dbus_cache_group_check_group`| The group to check for. | `student` |
 | `login_wallpaper_path` | The path to the login wallpaper to set. | `/usr/share/42/login-screen.jpg` |
+| `ddcci_backlight_support` | Whether to enable support for DDC/CI to allow controlling the brightness of external monitors. Should be set to `false` if you're using iMacs with T2 chips or any other *ddcci-dkms* unsupported kernel. | `true` |
