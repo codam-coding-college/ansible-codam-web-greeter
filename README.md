@@ -9,7 +9,7 @@ Add the following to the roles in your `requirements.yml` file in your `ansiblec
 roles:
   - name: codam.webgreeter
     src: git+https://github.com/codam-coding-college/ansible-codam-web-greeter.git
-    version: v1.5.0
+    version: v1.5.1
 ```
 It is recommended to change the version specified to the latest one from the [Releases](https://github.com/codam-coding-college/ansible-codam-web-greeter/releases) page. Please note that this version is specific to this playbook and does not necessarily match the version of the codam-web-greeter itself.
 
@@ -19,6 +19,8 @@ ansible-galaxy install -r requirements.yml
 ```
 
 Modify the [variables](#variables) using the `vars/all.yml` file in your `ansiblecluster` repository to your liking. The one you most likely want to change is the `codam_web_greeter_data_server_url` variable to point to your own data server.
+
+> ⚠️ If using iMacs with T2 chips, set the `ddcci_backlight_support` variable to `false` to avoid issues with the ddcci-backlight kernel module.
 
 Add the role to your `site.yml` playbook as the last role executed (do not define tags here, this is unneccessary and is a mistake 42 made for all the other roles):
 ```yaml
