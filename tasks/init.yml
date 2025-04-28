@@ -103,3 +103,11 @@
     deb: "/tmp/nody-greeter-{{ nody_greeter_version }}-ubuntu.deb"
     state: present
   when: nody_greeter_pkg.stdout.find("install ok installed " + nody_greeter_version) == -1
+
+- name: Remove unwanted nody-greeter dotdesktop
+  tags: [codam.webgreeter, codam.webgreeter.init, codam.webgreeter.dotdesktop]
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /usr/share/applications/nody-greeter.desktop

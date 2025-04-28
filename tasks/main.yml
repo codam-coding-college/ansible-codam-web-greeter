@@ -1,7 +1,7 @@
 ---
 - name: "Include initial requirements for codam-web-greeter"
   ansible.builtin.include_tasks: "init.yml"
-  tags: [codam.webgreeter, codam.webgreeter.init]
+  tags: [codam.webgreeter, codam.webgreeter.init, codam.webgreeter.dotdesktop]
 
 - name: "Include installation process for codam-web-greeter"
   ansible.builtin.include_tasks: "install.yml"
