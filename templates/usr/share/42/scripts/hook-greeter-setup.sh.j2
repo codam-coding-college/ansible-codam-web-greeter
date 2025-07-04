@@ -32,7 +32,7 @@ while IFS= read -r SESSION; do
 	USER=$(echo "$SESSION" | /usr/bin/awk '{print $3}')
 
 {% if dbus_cache_group_check_enabled == true %}
-	# Check if the user is in the piscine group
+	# Check if the user is in the {{ dbus_cache_group_check_group }} group
 	USER_GROUPS=$(/usr/bin/id -Gn "$USER")
 	if /usr/bin/grep -q '{{ dbus_cache_group_check_group }}' <<<"$USER_GROUPS"; then
 		# If not, skip the user
