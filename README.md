@@ -4,6 +4,8 @@ This Ansible playbook installs [codam-web-greeter](https://github.com/codam-codi
 ---
 
 ## How to use
+Before starting, make sure npm is installed on your cluster computers. This is required for the build process of codam-web-greeter.
+
 Add the following to the roles in your `requirements.yml` file in your `ansiblecluster` repository:
 ```yaml
 roles:
