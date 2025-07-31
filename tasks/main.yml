@@ -9,7 +9,7 @@
 
 - name: "Include configuration setup process for codam-web-greeter"
   ansible.builtin.include_tasks: "setup.yml"
-  tags: [codam.webgreeter, codam.webgreeter.setup]
+  tags: [codam.webgreeter, codam.webgreeter.setup, hooks.d, codam.webgreeter.revertdisplaysetup]
 
 - name: "Include ft_lock replacement process"
   ansible.builtin.include_tasks: "ft_lock.yml"
