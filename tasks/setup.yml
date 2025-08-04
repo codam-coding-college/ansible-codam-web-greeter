@@ -52,8 +52,8 @@
 - name: Ensure lightdm.conf ends with newline
   tags: [codam.webgreeter, codam.webgreeter.setup]
   become: true
-  ansible.builtin.shell: |
-    sed -i -e '$a\' /etc/lightdm/lightdm.conf
+  shell:
+    cmd: "sed -i '$a\\' /etc/lightdm/lightdm.conf"
 
 - name: Configure lightdm
   tags: [codam.webgreeter, codam.webgreeter.setup]
