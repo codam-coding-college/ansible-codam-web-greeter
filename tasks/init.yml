@@ -81,6 +81,13 @@
     url: "https://github.com/JezerM/web-greeter/releases/download/{{ web_greeter_version }}/web-greeter-{{ web_greeter_version }}-ubuntu.deb"
     dest: "/tmp/web-greeter-{{ web_greeter_version }}-ubuntu.deb"
 
+- name: Uninstall nody-greeter package
+  tags: [codam.webgreeter, codam.webgreeter.init]
+  become: true
+  apt:
+    name: nody-greeter
+    state: absent
+
 - name: Check if web-greeter is installed and on the correct version
   tags: [codam.webgreeter, codam.webgreeter.init]
   shell:
