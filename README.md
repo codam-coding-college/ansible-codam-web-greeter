@@ -47,7 +47,7 @@ It is also possible to specify a default user image in case the user's `~/.face`
 ## Variables
 | Variable | Description | Default value |
 |----------|---------|-------------|
-| `nody_greeter_version` | The version of the nody-greeter to install from GitHub. | `1.6.2` |
+| `web_greeter_version` | The version of the web-greeter to install from GitHub. | `3.5.3` |
 | `codam_web_greeter_git_repo` | The repository to download codam-web-greeter from. | `https://github.com/codam-coding-college/codam-web-greeter` |
 | `codam_web_greeter_version` | The version of codam-web-greeter to download (use a tag or a branch name from the git repo). | `v1.3.2` |
 | `codam_web_greeter_theme` | The theme to use for the greeter. Can be `dark` or `light`. | `dark` |

@@ -65,7 +65,7 @@
     regexp: '^#?{{ item.split("=")[0] }}=' # regexp with optional comment start and up to the = sign to replace the value
     state: present
   with_items:
-    - 'greeter-session=nody-greeter'
+    - 'greeter-session=web-greeter'
     - 'user-session=ubuntu' # because codam-web-greeter does not support selecting a user session
     - 'allow-guest=false'
     - 'allow-user-switching=true'

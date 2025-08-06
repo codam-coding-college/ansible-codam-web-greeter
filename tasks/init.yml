@@ -73,41 +73,41 @@
     append: yes
   when: video_group.stdout != ""
 
-- name: Download nody-greeter deb to ansible controller
+- name: Download web-greeter deb to ansible controller
   tags: [codam.webgreeter, codam.webgreeter.init]
   delegate_to: localhost
   run_once: true
   get_url:
-    url: "https://github.com/JezerM/nody-greeter/releases/download/{{ nody_greeter_version }}/nody-greeter-{{ nody_greeter_version }}-ubuntu.deb"
-    dest: "/tmp/nody-greeter-{{ nody_greeter_version }}-ubuntu.deb"
+    url: "https://github.com/JezerM/web-greeter/releases/download/{{ web_greeter_version }}/web-greeter-{{ web_greeter_version }}-ubuntu.deb"
+    dest: "/tmp/web-greeter-{{ web_greeter_version }}-ubuntu.deb"
 
-- name: Check if nody-greeter is installed and on the correct version
+- name: Check if web-greeter is installed and on the correct version
   tags: [codam.webgreeter, codam.webgreeter.init]
   shell:
-    cmd: "dpkg-query -W -f='${Status} ${Version}' nody-greeter"
+    cmd: "dpkg-query -W -f='${Status} ${Version}' web-greeter"
   changed_when: false
   failed_when: false
-  register: nody_greeter_pkg
+  register: web_greeter_pkg
 
-- name: Copy nody-greeter deb
+- name: Copy web-greeter deb
   tags: [codam.webgreeter, codam.webgreeter.init]
   copy:
     remote_src: false
-    src: "/tmp/nody-greeter-{{ nody_greeter_version }}-ubuntu.deb"
-    dest: "/tmp/nody-greeter-{{ nody_greeter_version }}-ubuntu.deb"
-  when: nody_greeter_pkg.stdout.find("install ok installed " + nody_greeter_version) == -1
+    src: "/tmp/web-greeter-{{ web_greeter_version }}-ubuntu.deb"
+    dest: "/tmp/web-greeter-{{ web_greeter_version }}-ubuntu.deb"
+  when: web_greeter_pkg.stdout.find("install ok installed " + web_greeter_version) == -1
 
-- name: Install nody-greeter
+- name: Install web-greeter
   tags: [codam.webgreeter, codam.webgreeter.init]
   apt:
-    deb: "/tmp/nody-greeter-{{ nody_greeter_version }}-ubuntu.deb"
+    deb: "/tmp/web-greeter-{{ web_greeter_version }}-ubuntu.deb"
     state: present
-  when: nody_greeter_pkg.stdout.find("install ok installed " + nody_greeter_version) == -1
+  when: web_greeter_pkg.stdout.find("install ok installed " + web_greeter_version) == -1
 
-- name: Remove unwanted nody-greeter dotdesktop
+- name: Remove unwanted web-greeter dotdesktop
   tags: [codam.webgreeter, codam.webgreeter.init, codam.webgreeter.dotdesktop]
   file:
     path: "{{ item }}"
     state: absent
   with_items:
-    - /usr/share/applications/nody-greeter.desktop
+    - /usr/share/applications/web-greeter.desktop
