@@ -1,23 +1,65 @@
 ---
+# ==============================================================================
+# DEPENDENCIES SECTION
+# ==============================================================================
+# Version of nody-greeter to install
 nody_greeter_version: "1.6.2"
 
+# Specify whether or not to add support for ddcci-backlight control on external monitors.
+# Requires ddcci-dkms to be installed.
+# T2-CHIP WARNING: not supported on iMacs with T2 chips. If you have T2 chips, set this variable to false.
+ddcci_backlight_support: true
+
+
+# ==============================================================================
+# INSTALLATION SECTION
+# ==============================================================================
 # Specify where to download the codam-web-greeter from and which tag/release to use.
 # Fork the codam-web-greeter repository and point this URL to your fork if you need to use a custom version.
 codam_web_greeter_git_repo: "https://github.com/codam-coding-college/codam-web-greeter"
-codam_web_greeter_version: "v1.3.2"
-codam_web_greeter_theme: "dark" # dark or light
-codam_web_greeter_boxed_mode: "default" # default or boxed (boxed adds a semi-transparent background to the login/unlock forms for better readability)
 
+# The tag (version) or branch of the repository to use.
+codam_web_greeter_version: "v1.3.2"
+
+# Specify which theme of codam-web-greeter to install.
+# Can be "dark" or "light".
+codam_web_greeter_theme: "dark"
+
+# Specify whether to use boxed mode for the login screen.
+# Boxed mode adds a semi-transparent background to the login/unlock forms for better readability.
+# Can be "default" or "boxed".
+codam_web_greeter_boxed_mode: "default"
+
+# The path to the login wallpaper image. Used for the login screen background.
+login_wallpaper_path: "/usr/share/42/login-screen.jpg"
+
+
+# ==============================================================================
+# SYSTEMD SECTION
+# ==============================================================================
+# Define whether or not to check if the user is in a specific group when caching their user data with dbus.
+dbus_cache_group_check_enabled: false
+dbus_cache_group_check_group: "student" # default ou=student,ou=groups,dc=42campus,dc=org
+
+
+# ==============================================================================
+# CLIENT-SIDE CONFIGURATION SECTION (settings.json)
+# For more information on settings, refer to the settings.json file in
+# the codam-web-greeter repository in the client folder.
+# ==============================================================================
 
 # Specify the url to fetch configuration data from. Hostname is appended to the url, so make sure it ends with a slash.
 codam_web_greeter_data_server_url: "https://clusterdata.codam.nl/api/config/"
 
-# Define whether or not to check if the user is in a specific group when caching their user data with dbus
-dbus_cache_group_check_enabled: false
-dbus_cache_group_check_group: "student" # default ou=student,ou=groups,dc=42campus,dc=org
+# The username and password of the campus exam session.
+codam_web_greeter_exam_username: "exam"
+codam_web_greeter_exam_password: "password"
 
-login_wallpaper_path: "/usr/share/42/login-screen.jpg"
+# Disable exam mode all together, making students have to manually log in to exam sessions.
+codam_web_greeter_disable_exam_mode: false
 
-# Specify whether or not to add support for ddcci-backlight control on external monitors
-# Requires ddcci-dkms to be installed, which is not supported by iMacs with T2 chips
-ddcci_backlight_support: true
+# How often (in seconds) to check if the greeter should go into exam mode.
+exam_mode_check_interval: 5
+
+# How many minutes before an exam starts should the greeter go into exam mode.
+codam_web_greeter_exam_mode_minutes_before_begin: 20

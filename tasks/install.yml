@@ -26,13 +26,27 @@
     version: "{{ codam_web_greeter_version }}"
     force: true
 
-- name: Set data-server-url
+# Find the path to settings.ini:
+# Can be client/static/settings.ini or just static/settings.ini.
+# Or the file may not exist at all.
+- name: Find codam-web-greeter settings.ini
+  tags: [codam.webgreeter, codam.webgreeter.install]
+  find:
+    depth: 4
+    path: /tmp/codam-web-greeter
+    patterns: settings.ini
+    file_type: file
+  register: settings_ini
+
+- name: Set data-server-url in settings.ini
   tags: [codam.webgreeter, codam.webgreeter.install]
   lineinfile:
-    path: /tmp/codam-web-greeter/static/settings.ini
+    path: "{{ item.path }}"
     line: "data-server-url={{ codam_web_greeter_data_server_url }}"
     state: present
     regexp: '^data-server-url='
+  when: settings_ini.matched > 0
+  loop: "{{ settings_ini.files }}"
 
 - name: Build codam-web-greeter
   tags: [codam.webgreeter, codam.webgreeter.install]
@@ -47,7 +61,17 @@
   make:
     chdir: /tmp/codam-web-greeter
     target: install
-    params: "CLIENT_THEME={{ codam_web_greeter_theme }} CLIENT_THEME_BOXED={{ codam_web_greeter_boxed_mode }}"
+    params: "CLIENT_THEME={{ codam_web_greeter_theme }} CLIENT_THEME_BOXED={{ codam_web_greeter_boxed_mode }} DATA_SERVER_URL={{ codam_web_greeter_data_server_url }}"
+
+- name: Copy codam-web-greeter settings.json ( v1.4.0+ )
+  tags: [codam.webgreeter, codam.webgreeter.install]
+  become: true
+  template:
+    src: usr/share/web-greeter/themes/codam/settings.json.j2
+    dest: /usr/share/web-greeter/themes/codam/settings.json
+    owner: root
+    group: root
+    mode: '0644'
 
 - name: Fetch initial codam-web-greeter data.json from server
   tags: [codam.webgreeter, codam.webgreeter.install]

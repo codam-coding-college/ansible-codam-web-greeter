@@ -45,15 +45,8 @@ Using this feature over the logo embedded in the wallpaper has the advantage tha
 It is also possible to specify a default user image in case the user's `~/.face` file is not present in their home folder. This image should be named `user.png` and be placed in the same directory as the logo. The default 42 user image can be found [here](https://github.com/codam-coding-college/ansible-codam-web-greeter/blob/main/files/usr/share/codam/web-greeter/user.png). If no default user image is present on the system, no image will be displayed on the lock screen at all and it will just display the student's name.
 
 ## Variables
-| Variable | Description | Default value |
-|----------|---------|-------------|
-| `nody_greeter_version` | The version of the nody-greeter to install from GitHub. | `1.6.2` |
-| `codam_web_greeter_git_repo` | The repository to download codam-web-greeter from. | `https://github.com/codam-coding-college/codam-web-greeter` |
-| `codam_web_greeter_version` | The version of codam-web-greeter to download (use a tag or a branch name from the git repo). | `v1.3.2` |
-| `codam_web_greeter_theme` | The theme to use for the greeter. Can be `dark` or `light`. | `dark` |
-| `codam_web_greeter_boxed_mode` | Boxed mode adds a semi-transparent background to the login/unlock forms for better readability. Can be `default` (no background) or `boxed`. | `default` |
-| `codam_web_greeter_data_server_url` | The URL to the data server to download the greeter data from. Hostname is appended to the url, so make sure it ends with a slash. | `https://clusterdata.codam.nl/api/config/` |
-| `dbus_cache_group_check_enabled`| Whether to check if a user is in a specific ldap group before adding it to the dbus cache. Usually this is not required. | `false` |
-| `dbus_cache_group_check_group`| The group to check for. | `student` |
-| `login_wallpaper_path` | The path to the login wallpaper to set. | `/usr/share/42/login-screen.jpg` |
-| `ddcci_backlight_support` | Whether to enable support for DDC/CI to allow controlling the brightness of external monitors. Should be set to `false` if you're using iMacs with T2 chips or any other *ddcci-dkms* unsupported kernel. | `true` |
+Refer to [the defaults/main.yml file](defaults/main.yml) for the complete list of variables, including their descriptions and default values.
+
+### Warning: iMacs with T2 chips
+If you are using iMacs with T2 chips, you should set the `ddcci_backlight_support` variable to `false` in your `vars/all.yml` file.
+This is because the required *ddcci-dkms* kernel module is not supported on these machines.
