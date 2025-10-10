@@ -57,3 +57,4 @@ It is also possible to specify a default user image in case the user's `~/.face`
 | `dbus_cache_group_check_group`| The group to check for. | `student` |
 | `login_wallpaper_path` | The path to the login wallpaper to set. | `/usr/share/42/login-screen.jpg` |
 | `ddcci_backlight_support` | Whether to enable support for DDC/CI to allow controlling the brightness of external monitors. Should be set to `false` if you're using iMacs with T2 chips or any other *ddcci-dkms* unsupported kernel. | `true` |
+| `codam_web_greeter_idle_logout_hook_contents` | The contents of the custom hook script that is run after a user is logged out due to leaving a computer idle. Look at [defaults/main.yml](defaults/main.yml) for an example. | [View example](defaults/main.yml) |

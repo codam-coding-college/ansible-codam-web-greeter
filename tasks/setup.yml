@@ -147,6 +147,16 @@
         exit 0
       fi
 
+- name: Customize post-idle-logout hook script
+  tags: [codam.webgreeter, codam.webgreeter.setup, hooks.d]
+  become: true
+  copy:
+    content: "{{ codam_web_greeter_idle_logout_hook_contents }}"
+    dest: /usr/share/codam/codam-web-greeter-idler-hook.sh
+    owner: root
+    group: root
+    mode: '0500' # Do not allow others to read this script, it may contain sensitive info
+
 - name: Allow rebooting from greeter
   tags: [codam.webgreeter, codam.webgreeter.setup]
   become: true
