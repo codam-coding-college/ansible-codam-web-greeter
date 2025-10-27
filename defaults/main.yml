@@ -4,7 +4,7 @@ web_greeter_version: "3.5.3"
 # Specify where to download the codam-web-greeter from and which tag/release to use.
 # Fork the codam-web-greeter repository and point this URL to your fork if you need to use a custom version.
 codam_web_greeter_git_repo: "https://github.com/codam-coding-college/codam-web-greeter"
-codam_web_greeter_version: "v1.3.2"
+codam_web_greeter_version: "v1.3.6"
 codam_web_greeter_theme: "dark" # dark or light
 codam_web_greeter_boxed_mode: "default" # default or boxed (boxed adds a semi-transparent background to the login/unlock forms for better readability)
 

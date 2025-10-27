@@ -11,7 +11,7 @@ Add the following to the roles in your `requirements.yml` file in your `ansiblec
 roles:
   - name: codam.webgreeter
     src: git+https://github.com/codam-coding-college/ansible-codam-web-greeter.git
-    version: v1.5.2
+    version: v1.5.3
 ```
 It is recommended to change the version specified to the latest one from the [Releases](https://github.com/codam-coding-college/ansible-codam-web-greeter/releases) page. Please note that this version is specific to this playbook and does not necessarily match the version of the codam-web-greeter itself.
 
@@ -49,7 +49,7 @@ It is also possible to specify a default user image in case the user's `~/.face`
 |----------|---------|-------------|
 | `web_greeter_version` | The version of the web-greeter to install from GitHub. | `3.5.3` |
 | `codam_web_greeter_git_repo` | The repository to download codam-web-greeter from. | `https://github.com/codam-coding-college/codam-web-greeter` |
-| `codam_web_greeter_version` | The version of codam-web-greeter to download (use a tag or a branch name from the git repo). | `v1.3.2` |
+| `codam_web_greeter_version` | The version of codam-web-greeter to download (use a tag or a branch name from the git repo). | `v1.3.6` |
 | `codam_web_greeter_theme` | The theme to use for the greeter. Can be `dark` or `light`. | `dark` |
 | `codam_web_greeter_boxed_mode` | Boxed mode adds a semi-transparent background to the login/unlock forms for better readability. Can be `default` (no background) or `boxed`. | `default` |
 | `codam_web_greeter_data_server_url` | The URL to the data server to download the greeter data from. Hostname is appended to the url, so make sure it ends with a slash. | `https://clusterdata.codam.nl/api/config/` |
