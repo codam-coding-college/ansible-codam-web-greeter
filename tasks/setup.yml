@@ -157,12 +157,20 @@
     group: root
     mode: '0500' # Do not allow others to read this script, it may contain sensitive info
 
-- name: Allow rebooting from greeter
+- name: Check if freedesktop login1 policy exists on organizational level # 42.common v2.1.13 and before
+  tags: [codam.webgreeter, codam.webgreeter.setup]
+  become: true
+  ansible.builtin.stat:
+    path: /etc/polkit-1/localauthority/20-org.d/org.freedesktop.login1.pkla
+  register: polkit_login1_org_stat
+
+- name: Allow rebooting from greeter on organizational level
   tags: [codam.webgreeter, codam.webgreeter.setup]
   become: true
   blockinfile:
     path: /etc/polkit-1/localauthority/20-org.d/org.freedesktop.login1.pkla
-    insertafter: EOF
+    insertafter: BOF # beginning of file: overrule existing entries
+    create: false
     block: |
       [42 Enable reboot by default for lightdm user]
       Identity=unix-user:lightdm
@@ -170,6 +178,30 @@
       ResultAny=yes
       ResultInactive=yes
       ResultActive=yes
+  when: polkit_login1_org_stat.stat.exists
+
+- name: Check if freedesktop login1 policy exists on local level # 42.common >v2.1.13
+  tags: [codam.webgreeter, codam.webgreeter.setup]
+  become: true
+  ansible.builtin.stat:
+    path: /etc/polkit-1/localauthority/50-local.d/10-org.freedesktop.login1.pkla
+  register: polkit_login1_local_stat
+
+- name: Allow rebooting from greeter on local level
+  tags: [codam.webgreeter, codam.webgreeter.setup]
+  become: true
+  blockinfile:
+    path: /etc/polkit-1/localauthority/50-local.d/10-org.freedesktop.login1.pkla
+    insertafter: BOF # beginning of file: overrule existing entries
+    create: false
+    block: |
+      [Allow lightdm user to reboot]
+      Identity=unix-user:lightdm
+      Action=org.freedesktop.login1.reboot;org.freedesktop.login1.reboot-multiple-sessions;org.freedesktop.login1.reboot-ignore-inhibit;
+      ResultAny=yes
+      ResultInactive=yes
+      ResultActive=yes
+  when: polkit_login1_local_stat.stat.exists
 
 - name: Ignore power, suspend and hibernate keys
   tags: [codam.webgreeter, codam.webgreeter.setup]
