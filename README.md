@@ -24,7 +24,7 @@ Modify the [variables](#variables) using the `vars/all.yml` file in your `ansibl
 
 > ⚠️ If using iMacs with T2 chips, set the `ddcci_backlight_support` variable to `false` to avoid issues with the ddcci-backlight kernel module.
 
-Add the role to your `site.yml` playbook as the last role executed (do not define tags here, this is unneccessary and is a mistake 42 made for all the other roles):
+Add the role to your `site.yml` playbook as the last role to be executed:
 ```yaml
 roles:
   ...
