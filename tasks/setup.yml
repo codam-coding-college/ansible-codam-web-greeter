@@ -108,6 +108,16 @@
     state: present
     regexp: '^#?greeter-setup-script='
 
+- name: Copy login hook script to prevent user sessions on X-server :1
+  tags: [codam.webgreeter, codam.webgreeter.setup, hooks.d]
+  become: true
+  copy:
+    src: usr/share/42/scripts/hooks.d/login.d/10-prevent-xserver-1.sh
+    dest: /usr/share/42/scripts/hooks.d/login.d/10-prevent-xserver-1.sh
+    owner: root
+    group: root
+    mode: '0500'
+
 - name: Add user uncaching to logout hooks
   tags: [codam.webgreeter, codam.webgreeter.setup, hooks.d]
   become: true
