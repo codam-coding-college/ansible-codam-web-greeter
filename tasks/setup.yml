@@ -49,17 +49,29 @@
     group: root
     mode: '0644'
 
-- name: Ensure lightdm.conf ends with newline
+- name: Ensure lightdm.conf.d/greeter.conf exists
+  tags: [codam.webgreeter, codam.webgreeter.setup]
+  become: true
+  file:
+    path: /etc/lightdm/lightdm.conf.d/greeter.conf
+    state: touch
+    owner: root
+    group: root
+    mode: '0644'
+    modification_time: preserve
+    access_time: preserve
+
+- name: Ensure lightdm.conf.d/greeter.conf ends with newline
   tags: [codam.webgreeter, codam.webgreeter.setup]
   become: true
   shell:
-    cmd: "sed -i '$a\\' /etc/lightdm/lightdm.conf"
+    cmd: "sed -i '$a\\' /etc/lightdm/lightdm.conf.d/greeter.conf"
 
 - name: Configure lightdm
   tags: [codam.webgreeter, codam.webgreeter.setup]
   become: true
   lineinfile:
-    path: /etc/lightdm/lightdm.conf
+    path: /etc/lightdm/lightdm.conf.d/greeter.conf
     line: "{{ item }}"
     insertafter: "[SeatDefaults]"
     regexp: '^#?{{ item.split("=")[0] }}=' # regexp with optional comment start and up to the = sign to replace the value
@@ -83,7 +95,7 @@
   tags: [never, codam.webgreeter.revertdisplaysetup] # this task is only needed when you want to revert the display-setup hook changes made by version v1.2.0 - v1.2.1
   become: true
   lineinfile:
-    path: /etc/lightdm/lightdm.conf
+    path: /etc/lightdm/lightdm.conf.d/greeter.conf
     state: absent
     insertbefore: 'session-setup-script='
     regexp: '^display-setup-script='
@@ -102,7 +114,7 @@
   tags: [codam.webgreeter, codam.webgreeter.setup, hooks.d]
   become: true
   lineinfile:
-    path: /etc/lightdm/lightdm.conf
+    path: /etc/lightdm/lightdm.conf.d/greeter.conf
     line: greeter-setup-script=/usr/share/42/scripts/hook-greeter-setup.sh
     insertbefore: 'session-setup-script='
     state: present
